@@ -49,7 +49,6 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
     private static readonly Random _rng = new();
     private FollowerState _state = FollowerState.SearchingForLeader;
     private bool isHideout = false;
-    private bool isTown = false;
     private string[] excludeZones =
     {
         "hideout",
@@ -82,11 +81,9 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
         reviveDelayTime = 0;
         flaskDelayTime = 0;
         isHideout = GameController.Area?.CurrentArea?.IsHideout == true;
-        isTown = GameController.Area?.CurrentArea?.IsTown == true;
         path = null;
         _state = FollowerState.SearchingForLeader;
 
-        // var isTown = GameController.Area?.CurrentArea?.IsTown == true;
         //Perform once-per-zone processing here
         //TODO: Auto stash. Auto Link.
     }
@@ -146,15 +143,15 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
             var es = Sanitize(life?.ESPercentage ?? 0f);
             var mana = Sanitize(life?.MPPercentage ?? 0f);
 
-            if (hp <= Settings.FlaskThreshold)
+            if (hp <= (Settings.FlaskThreshold * 0.01))
             {
-                PressKey(Keys.D1);
                 flaskDelayTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + Settings.FlaskDelay;
+                PressKey(Keys.D1);
             }
         }
 
 
-        if (Settings.Run && !isTown && DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - lastRun >= Settings.FindPathDelay)
+        if (Settings.Run && DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - lastRun >= Settings.FindPathDelay)
         {
             var playerGridPos = GetPlayerGridPos();
             var leader = FindLeader();
