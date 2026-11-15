@@ -42,6 +42,7 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
     private long lastRun;
     private long portalDelayTime;
     private long reviveDelayTime;
+    private long flaskDelayTime;
     private PathFinder pathFinder;
     private List<Vector2i> path;
     private SharpDX.RectangleF _rect;
@@ -78,6 +79,7 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
         pathFinder = new PathFinder(GameController.IngameState.Data.RawPathfindingData, new[] { 1, 2, 3, 4, 5 });
         portalDelayTime = 0;
         reviveDelayTime = 0;
+        flaskDelayTime = 0;
         isHideout = GameController.Area?.CurrentArea?.IsHideout == true;
         path = null;
         _state = FollowerState.SearchingForLeader;
@@ -134,6 +136,21 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
         if (ingameUi.LargePanels.Any(x => x.IsVisible)) return null;
         if (ingameUi.OpenRightPanel.IsVisible) return null;
         if (ingameUi.OpenLeftPanel.IsVisible) return null;
+
+        if (Settings.EnableFlask && DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() > flaskDelayTime)
+        {
+            var life = GameController.Player?.GetComponent<ExileCore.PoEMemory.Components.Life>();
+            var hp = Sanitize(life?.HPPercentage ?? 0f);
+            var es = Sanitize(life?.ESPercentage ?? 0f);
+            var mana = Sanitize(life?.MPPercentage ?? 0f);
+
+            if (hp <= Settings.FlaskThreshold)
+            {
+                PressKey(Keys.D1);
+                flaskDelayTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + Settings.FlaskDelay;
+            }
+        }
+
 
         if (Settings.Run && DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - lastRun >= Settings.FindPathDelay)
         {
@@ -613,6 +630,15 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
         await Task.Delay(_rng.Next(30, 51));
         Input.KeyUp(key);
     }
+
+    private static async Task PressKey(Keys key)
+    {
+        Input.KeyDown(key);
+        await Task.Delay(_rng.Next(30, 51));
+        Input.KeyUp(key);
+    }
+
+    private static float Sanitize(float v) => float.IsFinite(v) ? v : 0f;
 
     public enum FollowerState
     {

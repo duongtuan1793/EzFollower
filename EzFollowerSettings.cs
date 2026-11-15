@@ -25,8 +25,11 @@ public class EzFollowerSettings : ISettings
     public ToggleNode EnableLoot { get; set; } = new ToggleNode(true);
     public ToggleNode EnableAutoRevive { get; set; } = new ToggleNode(true);
     public ToggleNode EnablePortalFollow { get; set; } = new ToggleNode(true);
+    public ToggleNode EnableFlask { get; set; } = new ToggleNode(true);
     public ToggleNode DrawWorldPath { get; set; } = new ToggleNode(false);
 
+    public RangeNode<int> FlaskThreshold { get; set; } = new RangeNode<int>(95, 0, 100);
+    public RangeNode<int> FlaskDelay { get; set; } = new RangeNode<int>(1000, 100, 10000);
     public RangeNode<int> FindPathDelay { get; set; } = new RangeNode<int>(360, 200, 2000);
     public RangeNode<int> MoveRange { get; set; } = new RangeNode<int>(290, 200, 500);
     public RangeNode<int> CircleRadius { get; set; } = new RangeNode<int>(0, 0, 200);
