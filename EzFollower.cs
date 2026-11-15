@@ -158,55 +158,53 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
 
             if (leader == null)
             {
-                if (Settings.EnablePortalFollow)
+                if (isHideout)
                 {
-                    if (isHideout)
-                    {
-                        var leaderZone = GetLeaderZoneFromPartyUI();
-                        if (!string.IsNullOrEmpty(leaderZone) && !IsLeaderInExcludeZone(leaderZone)){
-                            var portals = FindAllPortals();
-                            if (portals.Count <= Settings.PortalRemain && portals.Count > 0)
-                            {
-                                if (portalDelayTime == 0)
-                                {
-                                    portalDelayTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (Settings.PortalDelay * 1000);
-                                }
-                                else if (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() > portalDelayTime)
-                                {
-                                    var portalGridPos = new Vector2(portals[0].GridPosNum.X, portals[0].GridPosNum.Y);
-                                    var distance = Vector2.Distance(playerGridPos, portalGridPos);
-
-                                    if (distance < 30)
-                                    {
-                                        FollowTarget(new Vector2i((int)playerGridPos.X, (int)playerGridPos.Y), new Vector2i((int)portals[0].GridPosNum.X, (int)portals[0].GridPosNum.Y), ClickMode.Left);
-                                    }
-                                    else
-                                    {
-                                        FollowTarget(new Vector2i((int)playerGridPos.X, (int)playerGridPos.Y), new Vector2i((int)portals[0].GridPosNum.X, (int)portals[0].GridPosNum.Y), ClickMode.MoveKey);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
+                    var leaderZone = GetLeaderZoneFromPartyUI();
+                    if (!string.IsNullOrEmpty(leaderZone) && !IsLeaderInExcludeZone(leaderZone)){
                         var portals = FindAllPortals();
-                        if (portals.Count > 0)
+                        if (portals.Count <= Settings.PortalRemain && portals.Count > 0)
                         {
-                            var portalGridPos = new Vector2(portals[0].GridPosNum.X, portals[0].GridPosNum.Y);
-                            var distance = Vector2.Distance(playerGridPos, portalGridPos);
-
-                            if (distance < 30)
+                            if (portalDelayTime == 0)
                             {
-                                FollowTarget(new Vector2i((int)playerGridPos.X, (int)playerGridPos.Y), new Vector2i((int)portals[0].GridPosNum.X, (int)portals[0].GridPosNum.Y), ClickMode.Left);
+                                portalDelayTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (Settings.PortalDelay * 1000);
                             }
-                            else
+                            else if (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() > portalDelayTime)
                             {
-                                FollowTarget(new Vector2i((int)playerGridPos.X, (int)playerGridPos.Y), new Vector2i((int)portals[0].GridPosNum.X, (int)portals[0].GridPosNum.Y), ClickMode.MoveKey);
+                                var portalGridPos = new Vector2(portals[0].GridPosNum.X, portals[0].GridPosNum.Y);
+                                var distance = Vector2.Distance(playerGridPos, portalGridPos);
+
+                                if (distance < 30)
+                                {
+                                    FollowTarget(new Vector2i((int)playerGridPos.X, (int)playerGridPos.Y), new Vector2i((int)portals[0].GridPosNum.X, (int)portals[0].GridPosNum.Y), ClickMode.Left);
+                                }
+                                else
+                                {
+                                    FollowTarget(new Vector2i((int)playerGridPos.X, (int)playerGridPos.Y), new Vector2i((int)portals[0].GridPosNum.X, (int)portals[0].GridPosNum.Y), ClickMode.MoveKey);
+                                }
                             }
                         }
                     }
                 }
+                else
+                {
+                    var portals = FindAllPortals();
+                    if (portals.Count > 0)
+                    {
+                        var portalGridPos = new Vector2(portals[0].GridPosNum.X, portals[0].GridPosNum.Y);
+                        var distance = Vector2.Distance(playerGridPos, portalGridPos);
+
+                        if (distance < 30)
+                        {
+                            FollowTarget(new Vector2i((int)playerGridPos.X, (int)playerGridPos.Y), new Vector2i((int)portals[0].GridPosNum.X, (int)portals[0].GridPosNum.Y), ClickMode.Left);
+                        }
+                        else
+                        {
+                            FollowTarget(new Vector2i((int)playerGridPos.X, (int)playerGridPos.Y), new Vector2i((int)portals[0].GridPosNum.X, (int)portals[0].GridPosNum.Y), ClickMode.MoveKey);
+                        }
+                    }
+                }
+
             }
             else if (!isHideout)
             {
