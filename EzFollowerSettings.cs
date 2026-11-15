@@ -21,9 +21,10 @@ public class EzFollowerSettings : ISettings
     public HotkeyNode StartKey { get; set; } = new HotkeyNode(Keys.Insert);
     public HotkeyNode MoveKey { get; set; } = new HotkeyNode(Keys.T);
     public HotkeyNode QuickLootKey { get; set; } = new HotkeyNode(Keys.F9);
-    public TextNode LeaderName { get; set; } = new TextNode("CotA_CoBeKieuKy");
+    public TextNode LeaderName { get; set; } = new TextNode("CoU_CoBeKieuKy");
     public ToggleNode EnableLoot { get; set; } = new ToggleNode(true);
     public ToggleNode EnableAutoRevive { get; set; } = new ToggleNode(true);
+    public ToggleNode EnablePortalFollow { get; set; } = new ToggleNode(true);
     public ToggleNode DrawWorldPath { get; set; } = new ToggleNode(false);
 
     public RangeNode<int> FindPathDelay { get; set; } = new RangeNode<int>(360, 200, 2000);

@@ -140,7 +140,7 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
             var playerGridPos = GetPlayerGridPos();
             var leader = FindLeader();
 
-            if (leader == null)
+            if (leader == null && Settings.EnablePortalFollow)
             {
                 if (isHideout)
                 {
