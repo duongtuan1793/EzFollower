@@ -145,8 +145,8 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
 
             if (hp <= (Settings.FlaskThreshold * 0.01))
             {
-                flaskDelayTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + Settings.FlaskDelay;
                 PressKey(Keys.D1);
+                flaskDelayTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + Settings.FlaskDelay;
             }
         }
 
@@ -161,7 +161,10 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
                 if (isHideout)
                 {
                     var leaderZone = GetLeaderZoneFromPartyUI();
-                    if (!string.IsNullOrEmpty(leaderZone) && !IsLeaderInExcludeZone(leaderZone)){
+                    // leaderZone empty now
+                    // if (!string.IsNullOrEmpty(leaderZone) && !IsLeaderInExcludeZone(leaderZone)){
+                    if (true)
+                    {
                         var portals = FindAllPortals();
                         if (portals.Count <= Settings.PortalRemain && portals.Count > 0)
                         {
