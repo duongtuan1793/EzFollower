@@ -76,7 +76,7 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
     public override void AreaChange(AreaInstance area)
     {
         _heightData = GameController.IngameState.Data.RawTerrainHeightData;
-        pathFinder = new PathFinder(GameController.IngameState.Data.RawPathfindingData, new[] { 1, 2, 3, 4, 5 });
+        pathFinder = new PathFinder(GameController.IngameState.Data.GetClearedPathfindingData(), new[] { 1, 2, 3, 4, 5 });
         portalDelayTime = 0;
         reviveDelayTime = 0;
         flaskDelayTime = 0;
@@ -452,7 +452,7 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
         path = pathFinder.FindPath(start, target);
 
 
-        if (path != null || path.Count > 0)
+        if (path != null)
         {
             var screenPos = new Vector2();
             var screenCenter = new Vector2(_rect.Width / 2f, _rect.Height / 2f);
@@ -465,6 +465,11 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
                     break;
                 }
             }
+            if (path.Count == 0)
+            {
+                screenPos = screenCenter;
+            }
+
             if (clickMode == ClickMode.MoveKey)
             {
                 MoveCursorAndPressKey(screenPos, Settings.MoveKey);
