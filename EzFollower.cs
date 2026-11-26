@@ -143,7 +143,7 @@ public class EzFollower : BaseSettingsPlugin<EzFollowerSettings>
             var es = Sanitize(life?.ESPercentage ?? 0f);
             var mana = Sanitize(life?.MPPercentage ?? 0f);
 
-            if (hp <= (Settings.FlaskThreshold * 0.01))
+            if (hp <= (Settings.HpThreshold * 0.01) || es <= (Settings.EsThreshold * 0.01))
             {
                 PressKey(Keys.D1);
                 flaskDelayTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + Settings.FlaskDelay;

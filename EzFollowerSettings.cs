@@ -27,7 +27,8 @@ public class EzFollowerSettings : ISettings
     public ToggleNode EnableFlask { get; set; } = new ToggleNode(true);
     public ToggleNode DrawWorldPath { get; set; } = new ToggleNode(false);
 
-    public RangeNode<int> FlaskThreshold { get; set; } = new RangeNode<int>(95, 0, 100);
+    public RangeNode<int> HpThreshold { get; set; } = new RangeNode<int>(95, -1, 101);
+    public RangeNode<int> EsThreshold { get; set; } = new RangeNode<int>(75, -1, 101);
     public RangeNode<int> FlaskDelay { get; set; } = new RangeNode<int>(1000, 100, 10000);
     public RangeNode<int> FindPathDelay { get; set; } = new RangeNode<int>(325, 200, 2000);
     public RangeNode<int> MoveRange { get; set; } = new RangeNode<int>(275, 200, 500);
